@@ -39,7 +39,7 @@ class RestaurantTableViewController: UITableViewController {
         cell.thumbnailImageView.layer.cornerRadius = 30
         cell.thumbnailImageView.clipsToBounds = true
         
-        // 9
+        // 9 if restaurantIsVisted true thecm show checkmark
         cell.accessoryType = restaurantIsVisted[indexPath.row] ? .checkmark : .none
         
         /* 同9
@@ -91,7 +91,7 @@ class RestaurantTableViewController: UITableViewController {
         // 加到 optionalMenu 裏
         optionMenu.addAction(callAction)
         
-        // 8 增加 check in action 屬於 UI alert action，此closure 方式 為 #81 第二種寫法
+        //8 增加 check in action 屬於 UI alert action，此closure 方式 為 #81 第二種寫法
         let checkInAction = UIAlertAction(title: "Check in", style: .default, handler: {
             
             (action: UIAlertAction) -> Void in
@@ -103,9 +103,21 @@ class RestaurantTableViewController: UITableViewController {
             self.restaurantIsVisted[indexPath.row] = true
         })
         
-        optionMenu.addAction(checkInAction)
+        if restaurantIsVisted[indexPath.row] == false {
+            optionMenu.addAction(checkInAction)
+        }
         
-        
+        //10
+        let undoCheckInActionHandler = {(action: UIAlertAction) -> () in
+            
+            let cell = tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = .none
+            self.restaurantIsVisted[indexPath.row] = false
+        }
+        if restaurantIsVisted[indexPath.row] == true {
+            let undoCheckInAction = UIAlertAction(title: "Undo check in", style: .default, handler: undoCheckInActionHandler)
+            optionMenu.addAction(undoCheckInAction)
+        }
         
         
         //讓選過的灰色框不要一直留著
@@ -115,7 +127,7 @@ class RestaurantTableViewController: UITableViewController {
         present(optionMenu, animated: true, completion: nil)
     }
     
-    //7
+    //7 create an Array filled of false
     var restaurantIsVisted = Array(repeating: false, count: 21)
     
     
