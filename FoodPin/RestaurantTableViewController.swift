@@ -130,8 +130,54 @@ class RestaurantTableViewController: UITableViewController {
     //7 create an Array filled of false
     var restaurantIsVisted = Array(repeating: false, count: 21)
     
-    
-    
+    /*11 comit:for row at 用來處理特定列的刪除或插入
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     
+     if editingStyle == .delete {
+     restaurantNames.remove(at: indexPath.row)
+     restaurantTypes.remove(at: indexPath.row)
+     restaurantLocations.remove(at: indexPath.row)
+     restaurantImages.remove(at: indexPath.row)
+     
+     }
+     // tableView.reloadData()
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     
+     }*/
+    //12 滑動帶出動作 edit action for row at
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        //share action
+        let shareAction = UITableViewRowAction(style: .default, title: "Share", handler: {
+            (action, indexPath) -> Void in
+            let defaultText = "Just checking in at " + self.restaurantNames[indexPath.row]
+            
+            //share image 不確定是否有image 因此用if let
+            if let imageToShare = UIImage(named: self.restaurantImages[indexPath.row]) {
+                let activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
+                self.present(activityController, animated: true, completion: nil)
+
+            }
+        })
+        
+        //delete action
+        let deleteAction = UITableViewRowAction(style: .default, title: "Delete", handler: {
+            (action, indexPath) -> Void in
+            
+            self.restaurantNames.remove(at: indexPath.row)
+            self.restaurantTypes.remove(at: indexPath.row)
+            self.restaurantLocations.remove(at: indexPath.row)
+            self.restaurantImages.remove(at: indexPath.row)
+            
+            self.tableView.deleteRows(at: [indexPath], with: .fade )
+            
+        })
+        
+        shareAction.backgroundColor = UIColor(colorLiteralRed: 48.0/255.0, green: 173.0/255.0, blue: 99.0/255.0, alpha: 1.0)
+        deleteAction.backgroundColor = UIColor(colorLiteralRed: 202.0/255, green: 202.0/255.0, blue: 203.0/255.0, alpha: 1.0)
+        
+        return [deleteAction, shareAction]
+
+    }
     
     
     
