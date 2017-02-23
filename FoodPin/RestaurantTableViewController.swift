@@ -66,67 +66,67 @@ class RestaurantTableViewController: UITableViewController {
     }
     
     //6 新增一個“點選後”會出現的功能 did Select Row at index Path
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        // 利用 UI Alert Controller 建立動作選單
-        let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .actionSheet) // .aleart or .actionSheet
-        
-        // 利用 UI Alert Action 增加動作並且
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        // 將 Alert Action 加入動作選單內
-        optionMenu.addAction(cancelAction)
-        
-        // 建立一個 closure (action: UIAleratAction) -> Void 的 handler: callActionHandler
-        // in 關鍵字為 closure 開始的地方
-        let callActionHandler = {(action: UIAlertAction) -> Void in
-            
-            // closure 開始
-            let alertMessage = UIAlertController(title: "Service Unavailable", message: "Sorry, the call feature is not available yet. Please retry later", preferredStyle: .alert)
-            alertMessage.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alertMessage, animated: true, completion: nil)
-            // closure 結束
-        }
-        // 建立一個  call action 屬於 UI Alert Action
-        let callAction = UIAlertAction(title: "Call" + "123-000-\(indexPath.row)", style: .default, handler: callActionHandler)
-        // 加到 optionalMenu 裏
-        optionMenu.addAction(callAction)
-        
-        //8 增加 check in action 屬於 UI alert action，此closure 方式 為 #81 第二種寫法
-        let checkInAction = UIAlertAction(title: "Check in", style: .default, handler: {
-            
-            (action: UIAlertAction) -> Void in
-            
-            // 因為check mark 要顯示在 tableView 的 cell 上
-            let cell = tableView.cellForRow(at: indexPath)
-            // 附屬類型
-            cell?.accessoryType = .checkmark
-            self.restaurantIsVisted[indexPath.row] = true
-        })
-        
-        if restaurantIsVisted[indexPath.row] == false {
-            optionMenu.addAction(checkInAction)
-        }
-        
-        //10
-        let undoCheckInActionHandler = {(action: UIAlertAction) -> () in
-            
-            let cell = tableView.cellForRow(at: indexPath)
-            cell?.accessoryType = .none
-            self.restaurantIsVisted[indexPath.row] = false
-        }
-        if restaurantIsVisted[indexPath.row] == true {
-            let undoCheckInAction = UIAlertAction(title: "Undo check in", style: .default, handler: undoCheckInActionHandler)
-            optionMenu.addAction(undoCheckInAction)
-        }
-        
-        
-        //讓選過的灰色框不要一直留著
-        tableView.deselectRow(at: indexPath, animated: false)
-        
-        // 顯示：
-        present(optionMenu, animated: true, completion: nil)
-    }
-    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        
+//        // 利用 UI Alert Controller 建立動作選單
+//        let optionMenu = UIAlertController(title: nil, message: "What do you want to do?", preferredStyle: .actionSheet) // .aleart or .actionSheet
+//        
+//        // 利用 UI Alert Action 增加動作並且
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        // 將 Alert Action 加入動作選單內
+//        optionMenu.addAction(cancelAction)
+//        
+//        // 建立一個 closure (action: UIAleratAction) -> Void 的 handler: callActionHandler
+//        // in 關鍵字為 closure 開始的地方
+//        let callActionHandler = {(action: UIAlertAction) -> Void in
+//            
+//            // closure 開始
+//            let alertMessage = UIAlertController(title: "Service Unavailable", message: "Sorry, the call feature is not available yet. Please retry later", preferredStyle: .alert)
+//            alertMessage.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            self.present(alertMessage, animated: true, completion: nil)
+//            // closure 結束
+//        }
+//        // 建立一個  call action 屬於 UI Alert Action
+//        let callAction = UIAlertAction(title: "Call" + "123-000-\(indexPath.row)", style: .default, handler: callActionHandler)
+//        // 加到 optionalMenu 裏
+//        optionMenu.addAction(callAction)
+//        
+//        //8 增加 check in action 屬於 UI alert action，此closure 方式 為 #81 第二種寫法
+//        let checkInAction = UIAlertAction(title: "Check in", style: .default, handler: {
+//            
+//            (action: UIAlertAction) -> Void in
+//            
+//            // 因為check mark 要顯示在 tableView 的 cell 上
+//            let cell = tableView.cellForRow(at: indexPath)
+//            // 附屬類型
+//            cell?.accessoryType = .checkmark
+//            self.restaurantIsVisted[indexPath.row] = true
+//        })
+//        
+//        if restaurantIsVisted[indexPath.row] == false {
+//            optionMenu.addAction(checkInAction)
+//        }
+//        
+//        //10
+//        let undoCheckInActionHandler = {(action: UIAlertAction) -> () in
+//            
+//            let cell = tableView.cellForRow(at: indexPath)
+//            cell?.accessoryType = .none
+//            self.restaurantIsVisted[indexPath.row] = false
+//        }
+//        if restaurantIsVisted[indexPath.row] == true {
+//            let undoCheckInAction = UIAlertAction(title: "Undo check in", style: .default, handler: undoCheckInActionHandler)
+//            optionMenu.addAction(undoCheckInAction)
+//        }
+//        
+//        
+//        //讓選過的灰色框不要一直留著
+//        tableView.deselectRow(at: indexPath, animated: false)
+//        
+//        // 顯示：
+//        present(optionMenu, animated: true, completion: nil)
+//    }
+//    
     //7 create an Array filled of false
     var restaurantIsVisted = Array(repeating: false, count: 21)
     
@@ -155,7 +155,7 @@ class RestaurantTableViewController: UITableViewController {
             if let imageToShare = UIImage(named: self.restaurantImages[indexPath.row]) {
                 let activityController = UIActivityViewController(activityItems: [defaultText, imageToShare], applicationActivities: nil)
                 self.present(activityController, animated: true, completion: nil)
-
+                
             }
         })
         
@@ -171,15 +171,32 @@ class RestaurantTableViewController: UITableViewController {
             self.tableView.deleteRows(at: [indexPath], with: .fade )
             
         })
-        
+        // Add color
         shareAction.backgroundColor = UIColor(colorLiteralRed: 48.0/255.0, green: 173.0/255.0, blue: 99.0/255.0, alpha: 1.0)
         deleteAction.backgroundColor = UIColor(colorLiteralRed: 202.0/255, green: 202.0/255.0, blue: 203.0/255.0, alpha: 1.0)
         
         return [deleteAction, shareAction]
-
+        
     }
-    
-    
+    //13 Segue connection
+    // prepare(for:sneder:) 使用segue傳遞資料
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //檢查 Segue 的識別碼
+        if segue.identifier == "showRestaurantDetail" {
+            // index Path For Selected Row
+            if let indexPath = tableView.indexPathForSelectedRow {
+                // 利用 segue.destination 取得目標： RestaurantDetailViewController
+                let destinationController = segue.destination as! RestaurantDetailViewController
+                // 目標由本頁(RestaurantTableViewController)而來
+                destinationController.restaurantImage = restaurantImages[indexPath.row]
+                destinationController.restaurantName = restaurantNames[indexPath.row]
+                destinationController.restaurantType = restaurantTypes[indexPath.row]
+                destinationController.restaurantLocation = restaurantLocations[indexPath.row]
+                
+            }
+        }
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
