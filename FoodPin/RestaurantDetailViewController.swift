@@ -11,14 +11,11 @@ import UIKit
 class RestaurantDetailViewController: UIViewController {
     
     @IBOutlet var restaurantImageView: UIImageView!
-    var restaurantImage = ""
     @IBOutlet var restaurantNameLabel: UILabel!
-    var restaurantName = ""
     @IBOutlet var restaurantTypeLabel: UILabel!
-    var restaurantType = ""
     @IBOutlet var restaurantLocationLabel: UILabel!
-    var restaurantLocation = ""
-    
+
+    var restarant:Restaurant!
     
     
     
@@ -26,10 +23,10 @@ class RestaurantDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        restaurantImageView.image = UIImage(named: restaurantImage)
-        restaurantNameLabel.text = restaurantName
-        restaurantLocationLabel.text = restaurantLocation
-        restaurantTypeLabel.text = restaurantType
+        restaurantImageView.image = UIImage(named: restarant.image)
+        restaurantNameLabel.text = restarant.name
+        restaurantLocationLabel.text = restarant.location
+        restaurantTypeLabel.text = restarant.type
         
     }
 
