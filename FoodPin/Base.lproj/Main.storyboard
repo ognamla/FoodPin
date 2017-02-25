@@ -294,7 +294,9 @@
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="BxS-8A-k1o" id="9t0-YW-l1K"/>
+                        <outlet property="clossButton" destination="G5R-nu-4J7" id="P5T-x7-6zS"/>
                         <outlet property="containerView" destination="5i6-gE-OZN" id="aPd-24-chE"/>
+                        <outlet property="restaurantimageViewatReview" destination="iOj-tZ-1dK" id="cMg-Bg-Nxn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ym5-bW-y7E" userLabel="First Responder" sceneMemberID="firstResponder"/>

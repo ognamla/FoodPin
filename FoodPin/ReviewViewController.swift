@@ -11,8 +11,11 @@ import UIKit
 class ReviewViewController: UIViewController {
     @IBOutlet var backgroundImageView: UIImageView!
     @IBOutlet var containerView: UIView!
+    @IBOutlet var restaurantimageViewatReview: UIImageView!
+    @IBOutlet var clossButton: UIButton!
     
-
+    var restaurantAtReview:Restaurant!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,6 +25,10 @@ class ReviewViewController: UIViewController {
         backgroundImageView.addSubview(blurEffectView)
         //設定原始狀態
         containerView.transform = CGAffineTransform.init(scaleX: 0, y: 0)
+        
+        restaurantimageViewatReview.image = UIImage(named: restaurantAtReview.image)
+        restaurantimageViewatReview.contentMode = .scaleAspectFill
+        restaurantimageViewatReview.clipsToBounds = true
     }
     
     // create a viewDidAppear
@@ -30,6 +37,7 @@ class ReviewViewController: UIViewController {
             //回復原來狀態 .identity
             self.containerView.transform = CGAffineTransform.identity
         })
+        
     }
 
     override func didReceiveMemoryWarning() {

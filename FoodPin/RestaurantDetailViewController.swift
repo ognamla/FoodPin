@@ -29,6 +29,12 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         //重要喔！
         tableView.reloadData()
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showReview" {
+            let destinationController = segue.destination as! ReviewViewController
+            destinationController.restaurantAtReview = restarant
+        }
+    }
     
     var restarant:Restaurant!
     
