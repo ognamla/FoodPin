@@ -13,11 +13,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    //內建 func 自訂Navigation bar 外觀
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+                // Override point for customization after application launch.
+        
+        UINavigationBar.appearance().barTintColor = UIColor(colorLiteralRed: 216/255, green: 74/255, blue: 32/255, alpha: 1)
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "Avenir-Light", size: 24)!]
+        UIApplication.shared.statusBarStyle = .lightContent
+        
         return true
     }
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

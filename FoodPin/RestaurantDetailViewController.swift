@@ -9,12 +9,41 @@
 import UIKit
 
 class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet var tableView : UITableView!
+    @IBOutlet var restaurantImageView: UIImageView!
+    
+    var restarant:Restaurant!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.backgroundColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 0.2)
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.separatorColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 0.8)
+        restaurantImageView.image = UIImage(named: restarant.image)
+        title = restarant.name
+        
+        navigationController?.hidesBarsOnSwipe = false
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.hidesBarsOnSwipe = false
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
     
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RestaurantDetailTableViewCell
         
         switch indexPath.row {
@@ -35,27 +64,9 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             cell.valueLabel.text = ""
             
         }
+        cell.backgroundColor = .clear
         return cell
         
-    }
-    
-    
-    @IBOutlet var restaurantImageView: UIImageView!
-    
-    var restarant:Restaurant!
-    
-    
-    
-    // 內建 viewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        restaurantImageView.image = UIImage(named: restarant.image)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
