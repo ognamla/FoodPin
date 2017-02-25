@@ -12,6 +12,23 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
     
     @IBOutlet var tableView : UITableView!
     @IBOutlet var restaurantImageView: UIImageView!
+    @IBAction func closs(segue: UIStoryboardSegue) {
+        // empty here is fine
+    }
+    @IBAction func ratingButtonTapped(segue: UIStoryboardSegue) {
+        if let rating = segue.identifier {
+            restarant.isVisited = true
+            switch rating {
+            case "great" : restarant.rating = "Absolutelylove it, Must try."
+            case "good"  : restarant.rating = "Pretty good."
+            case "dislike" : restarant.rating = "I don't like it."
+            default : restarant.rating = ""
+                
+            }
+        }
+        //重要喔！
+        tableView.reloadData()
+    }
     
     var restarant:Restaurant!
     
@@ -64,7 +81,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
             cell.valueLabel.text = restarant.phone
         case 4:
             cell.fieldLabel.text = "Been here"
-            cell.valueLabel.text = (restarant.isVisited) ? "Yes, I've been here before" : "No"
+            cell.valueLabel.text = (restarant.isVisited) ? "Yes, I've been here before. \(restarant.rating)" : "No"
         default:
             cell.fieldLabel.text = ""
             cell.valueLabel.text = ""
