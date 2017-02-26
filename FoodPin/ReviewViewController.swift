@@ -29,6 +29,9 @@ class ReviewViewController: UIViewController {
         restaurantimageViewatReview.image = UIImage(named: restaurantAtReview.image)
         restaurantimageViewatReview.contentMode = .scaleAspectFill
         restaurantimageViewatReview.clipsToBounds = true
+        
+        //close button animation
+        clossButton.transform = CGAffineTransform.init(translationX: 1000, y: 0)
     }
     
     // create a viewDidAppear
@@ -37,6 +40,9 @@ class ReviewViewController: UIViewController {
             //回復原來狀態 .identity
             self.containerView.transform = CGAffineTransform.identity
         })
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.3, options: .curveEaseInOut, animations: {
+            self.clossButton.transform = CGAffineTransform.identity
+        }, completion: nil )
         
     }
 
