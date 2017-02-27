@@ -55,6 +55,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         // Do any additional setup after loading the view.
         // showPicture#1 為了增加圖片（修改標誌示圖）必須請求協定！
         mapView.delegate = self
+        
         mapView.showsScale = true
         mapView.showsCompass = true
         mapView.showsTraffic = true
@@ -83,10 +84,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     self.mapView.showAnnotations([annotation], animated: true)
                     //在地圖上顯示 annotation 資訊
                     self.mapView.selectAnnotation(annotation, animated: true)
-                    self.mapView.showsScale = true
-                    self.mapView.showsCompass = true
-                    self.mapView.showsTraffic = true
-                    
+
                     
                     
                 }
