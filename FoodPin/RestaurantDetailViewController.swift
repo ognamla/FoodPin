@@ -33,6 +33,11 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
                 
             }
         }
+        
+        //儲存變更
+        if let AppDelegate = (UIApplication.shared.delegate as? AppDelegate) {
+            AppDelegate.saveContext()
+        }
         //重要喔！
         tableView.reloadData()
     }
@@ -50,7 +55,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         
     }
     
-    var restarant:Restaurant!
+    var restarant:RestaurantMO!
  
     
     //map
@@ -67,7 +72,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         //GeoCoder 為編譯器，將地址轉換成座標
         let geoCoder = CLGeocoder()
         //增加地址字串
-        geoCoder.geocodeAddressString(restarant.location, completionHandler: {
+        geoCoder.geocodeAddressString(restarant.location!, completionHandler: {
             // complete 後會回傳 placemarks(可能不止一個) 或 error
             placemarks, error in
             if error != nil {
@@ -96,7 +101,7 @@ class RestaurantDetailViewController: UIViewController, UITableViewDelegate, UIT
         tableView.backgroundColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 0.2)
         //        tableView.tableFooterView = UIView(frame: .zero)
         tableView.separatorColor = UIColor(colorLiteralRed: 240/255, green: 240/255, blue: 240/255, alpha: 0.8)
-        restaurantImageView.image = UIImage(named: restarant.image)
+        restaurantImageView.image = UIImage(data: restarant.image as! Data)
         title = restarant.name
         
         navigationController?.hidesBarsOnSwipe = false

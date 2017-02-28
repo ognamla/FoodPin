@@ -14,7 +14,7 @@ class ReviewViewController: UIViewController {
     @IBOutlet var restaurantimageViewatReview: UIImageView!
     @IBOutlet var clossButton: UIButton!
     
-    var restaurantAtReview:Restaurant!
+    var restaurantAtReview:RestaurantMO!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,7 @@ class ReviewViewController: UIViewController {
         //設定原始狀態
         containerView.transform = CGAffineTransform.init(scaleX: 0, y: 0)
         
-        restaurantimageViewatReview.image = UIImage(named: restaurantAtReview.image)
+        restaurantimageViewatReview.image = UIImage(data: restaurantAtReview.image as! Data)
         restaurantimageViewatReview.contentMode = .scaleAspectFill
         restaurantimageViewatReview.clipsToBounds = true
         

@@ -389,6 +389,9 @@
                                                                     <state key="normal" title="YES">
                                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="toggleBeenHereButtonWithSender:" destination="aDK-IB-AP1" eventType="touchUpInside" id="LqP-jn-aWf"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j4f-gn-Y9E">
                                                                     <rect key="frame" x="55" y="0.0" width="50" height="25"/>
@@ -399,6 +402,9 @@
                                                                     <state key="normal" title="NO">
                                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="toggleBeenHereButtonWithSender:" destination="aDK-IB-AP1" eventType="touchUpInside" id="riq-du-6gX"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <constraints>
@@ -433,10 +439,18 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="mhG-UF-9uS">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="saveWithSender:" destination="aDK-IB-AP1" id="PAq-vt-xvy"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="locationTextField" destination="Qsh-py-XJ4" id="vul-Af-7hg"/>
+                        <outlet property="nameTextField" destination="Kvb-BY-KOx" id="xZj-av-Zl3"/>
+                        <outlet property="noButton" destination="j4f-gn-Y9E" id="97f-Gs-3H7"/>
                         <outlet property="photoImageView" destination="1b9-g3-iqw" id="2CA-Eb-DO2"/>
+                        <outlet property="typeTextField" destination="9QO-S4-X2Y" id="V5o-oF-Zct"/>
+                        <outlet property="yesButton" destination="gwj-ZO-8m1" id="yP0-Zx-Khm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O56-nc-sYM" userLabel="First Responder" sceneMemberID="firstResponder"/>
