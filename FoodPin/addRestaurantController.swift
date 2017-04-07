@@ -17,23 +17,26 @@ class addRestaurantController: UITableViewController, UIImagePickerControllerDel
     @IBOutlet var nameTextField:UITextField!
     @IBOutlet var typeTextField:UITextField!
     @IBOutlet var locationTextField:UITextField!
+    @IBOutlet var phoneTextField: UITextField!
     @IBOutlet var yesButton:UIButton!
     @IBOutlet var noButton:UIButton!
+    
     
     var isVisited = true
     
     @IBAction func save(sender: Any?) {
-        if nameTextField.text == "" || typeTextField.text == "" || locationTextField.text == "" {
+        if nameTextField.text == "" || typeTextField.text == "" || locationTextField.text == "" || phoneTextField.text == "" {
             let alertController = UIAlertController(title: "Oops", message: "We can't proceed because one of the fields is blank. Please note that all fields are required.", preferredStyle: .alert)
             let alertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(alertAction)
             present(alertController, animated: true, completion: nil)
             
         }
-        print("Name: \(nameTextField.text)")
-        print("Type: \(typeTextField.text)")
-        print("Location: \(locationTextField.text)")
-        print("Have you been here: \(isVisited)")
+//        print("Name: \(nameTextField.text)")
+//        print("Type: \(typeTextField.text)")
+//        print("Location: \(locationTextField.text)")
+//        print("Phonr: \(phoneTextField.text)")
+//        print("Have you been here: \(isVisited)")
         
         // chapter 19
         // 取得 appDelegate 中 persistentContainer 變數
@@ -42,6 +45,7 @@ class addRestaurantController: UITableViewController, UIImagePickerControllerDel
             restaurantAtAddRestaurant.name = nameTextField.text
             restaurantAtAddRestaurant.type = typeTextField.text
             restaurantAtAddRestaurant.location = locationTextField.text
+            restaurantAtAddRestaurant.phone = phoneTextField.text
             restaurantAtAddRestaurant.isVisited = isVisited
             
             if let restaurantImage = photoImageView.image {

@@ -9,23 +9,51 @@
 import UIKit
 import CoreData
 
-// 說明：此 cocoa touch 文件屬於 UITableViewController，已內建些許程式碼，也不用再額外導入UITableViewDelegate 以及 UITabelViewDatasource...
-// 在整個UITabel View 底下
-class RestaurantTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class RestaurantTableViewController: UITableViewController, NSFetchedResultsControllerDelegate, UISearchResultsUpdating {
     
     var fetchResultController: NSFetchedResultsController<RestaurantMO>!
     @IBAction func unWindToHomeScreen(segue: UIStoryboardSegue) {
         
     }
     
+    var searchController: UISearchController!
+    // 第一次啟動app時會呼叫 pageViewController
+    override func viewDidAppear(_ animated: Bool) {
+       
+        if UserDefaults.standard.bool(forKey: "hasViewedWalkthrough") {
+            return
+        }
+        
+        if let pageviewController = storyboard?.instantiateViewController(withIdentifier: "WalkthroughController") as? WalkthroughPageViewController {
+            present(pageviewController, animated: true, completion: nil)
+            
+        }
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-          navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.hidesBarsOnSwipe = true
         
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
         
+        // searchController
+        // nil 表示搜尋結果顯示於相同視窗
+        searchController = UISearchController(searchResultsController: nil)
+        tableView.tableHeaderView = searchController.searchBar
+        
+        
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        searchController.searchBar.placeholder = "Search restaurants..."
+        searchController.searchBar.tintColor = UIColor.white
+        searchController.searchBar.barTintColor = UIColor(red: 218/255, green: 100/255, blue: 70/255, alpha: 1)
+        
+        
+        // coreData
         // 先從RestaurantMO 取得 NSFetchRequest object
         let fetchRequest: NSFetchRequest<RestaurantMO> = RestaurantMO.fetchRequest()
         // NSSortDescriptior 指定排序
@@ -78,7 +106,7 @@ class RestaurantTableViewController: UITableViewController, NSFetchedResultsCont
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
- 
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -90,9 +118,27 @@ class RestaurantTableViewController: UITableViewController, NSFetchedResultsCont
         // Dispose of any resources that can be recreated.
     }
     
+    //搜尋功能
+    var searchResults:[RestaurantMO] = []
+    func filterContent(for SearchText: String) {
+
+        searchResults = restaurants.filter({
+            (restaurants) -> Bool in
+            if let name = restaurants.name, let location = restaurants.location, let type = restaurants.type {
+                let isMatch = name.localizedCaseInsensitiveContains(SearchText) || location.localizedCaseInsensitiveContains(SearchText) || type.localizedCaseInsensitiveContains(SearchText)
+                return isMatch
+            }
+            return false
+        })
+    }
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text {
+            filterContent(for: searchText)
+            tableView.reloadData()
+        }
+    }
     
     //1
-    
     var restaurants:[RestaurantMO] = []
     //2 複寫 Tabel View 的行為（內建）
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { // 這裡的 UITabelViewCell 已被新 create 成 RestaurantUITabelViewCell
@@ -102,18 +148,27 @@ class RestaurantTableViewController: UITableViewController, NSFetchedResultsCont
         // RestaurantTableViewCell 則是稍早建立的cocoa touch 檔案
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! RestaurantTableViewCell
         
-        //3 Cell Setting
-        cell.nameLabel.text = restaurants[indexPath.row].name
-        cell.thumbnailImageView.image = UIImage(data: restaurants[indexPath.row].image as! Data)
-        cell.locationLabel.text = restaurants[indexPath.row].location
-        cell.typeLabel.text = restaurants[indexPath.row].type
+        //判斷是從搜尋結果或者原來的陣列取得餐廳
+        let restaurant = (searchController.isActive) ? searchResults[indexPath.row] : restaurants[indexPath.row]
+        
+        cell.nameLabel.text = restaurant.name
+        cell.thumbnailImageView.image = UIImage(data: restaurant.image as! Data)
+        cell.locationLabel.text = restaurant.location
+        cell.typeLabel.text = restaurant.type
+        
+        
+        //        //3 Cell Setting
+        //        cell.nameLabel.text = restaurants[indexPath.row].name
+        //        cell.thumbnailImageView.image = UIImage(data: restaurants[indexPath.row].image as! Data)
+        //        cell.locationLabel.text = restaurants[indexPath.row].location
+        //        cell.typeLabel.text = restaurants[indexPath.row].type
         
         //將 cell imageView 變成圓形
         cell.thumbnailImageView.layer.cornerRadius = 30
         cell.thumbnailImageView.clipsToBounds = true
         
         // 9 if restaurantIsVisted true thecm show checkmark
-        cell.accessoryType = restaurants[indexPath.row].isVisited ? .checkmark : .none
+        cell.accessoryType = restaurant.isVisited ? .checkmark : .none
         
         /* 同9
          if restaurantIsVisted[indexPath.row] {
@@ -125,6 +180,13 @@ class RestaurantTableViewController: UITableViewController, NSFetchedResultsCont
         
         return cell
     }
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if searchController.isActive {
+            return false
+        } else {
+            return true
+        }
+    }
     
     //4 number of sections (可省略，預設是 1)(內建)
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -134,8 +196,11 @@ class RestaurantTableViewController: UITableViewController, NSFetchedResultsCont
     
     //5 number of rows in section (section 內的 row number) （內建）
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return restaurants.count
+        if searchController.isActive {
+            return searchResults.count
+        } else {
+            return restaurants.count
+        }
     }
     
     //6 新增一個“點選後”會出現的功能 did Select Row at index Path
@@ -261,7 +326,8 @@ class RestaurantTableViewController: UITableViewController, NSFetchedResultsCont
                 // 利用 segue.destination 取得目標： RestaurantDetailViewController
                 let destinationController = segue.destination as! RestaurantDetailViewController
                 // 目標由本頁(RestaurantTableViewController)而來
-                destinationController.restarant = restaurants[indexPath.row]
+                destinationController.restarant = (searchController.isActive) ? searchResults[indexPath.row] : restaurants[indexPath.row]
+                
                 
             }
         }
